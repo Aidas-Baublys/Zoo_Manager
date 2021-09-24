@@ -13,16 +13,46 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Configuration;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Zoo_Manager
 {
     public partial class MainWindow : Window
     {
+        SqlConnection sqlConnection;
+
         public MainWindow()
         {
             InitializeComponent();
 
             string connectionString = ConfigurationManager.ConnectionStrings["Zoo_Manager.Properties.Settings.EchoDBConnectionString"].ConnectionString;
+            sqlConnection = new SqlConnection(connectionString);
+
+            ShowZoos();
+        }
+
+        private void ShowZoos()
+        {
+            try
+            {
+                string query = "select * from Zoo";
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, sqlConnection);
+
+                using (sqlDataAdapter)
+                {
+                    DataTable zooTable = new DataTable();
+                    sqlDataAdapter.Fill(zooTable);
+
+                    ZooList.DisplayMemberPath = "Location";
+                    ZooList.SelectedValuePath = "Id";
+                    ZooList.ItemsSource = zooTable.DefaultView;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
         }
     }
 }
