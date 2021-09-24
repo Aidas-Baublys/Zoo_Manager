@@ -26,7 +26,9 @@ namespace Zoo_Manager
         {
             InitializeComponent();
 
-            string connectionString = ConfigurationManager.ConnectionStrings["Zoo_Manager.Properties.Settings.EchoDBConnectionString"].ConnectionString;
+            string connectionString = ConfigurationManager
+                .ConnectionStrings["Zoo_Manager.Properties.Settings.EchoDBConnectionString"]
+                .ConnectionString;
             sqlConnection = new SqlConnection(connectionString);
 
             ShowZoos();
@@ -53,6 +55,36 @@ namespace Zoo_Manager
             {
                 MessageBox.Show(e.ToString());
             }
+        }
+
+        private void ShowAnimalList()
+        {
+            try
+            {
+                string query = "select * from Animal a inner join ZooAnimal za on a.Id = za.AnimalID where za.ZooID = @ZooID";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+
+                using (sqlDataAdapter)
+                {
+                    sqlCommand.Parameters.AddWithValue("@ZooID", ZooList.SelectedValue);
+                    DataTable animalTable = new DataTable();
+                    sqlDataAdapter.Fill(animalTable);
+
+                    AnimalList.DisplayMemberPath = "Name";
+                    AnimalList.SelectedValuePath = "Id";
+                    AnimalList.ItemsSource = animalTable.DefaultView;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        private void ZooList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ShowAnimalList();
         }
     }
 }

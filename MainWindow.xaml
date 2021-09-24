@@ -5,10 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Zoo_Manager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        >
     <Grid>
-        <Label Content="Zoo List" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <ListBox Name="ZooList" HorizontalAlignment="Left" Height="200" Margin="10,41,0,0" VerticalAlignment="Top" Width="100"/>
-
+        <Label Content="Zoo List" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+        <ListBox Name="ZooList" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Width="100" 
+            Height="200" 
+            Margin="10,41,0,0" SelectionChanged="ZooList_SelectionChanged"
+            />
+        <Label Content="Animal List" HorizontalAlignment="Left" Margin="127,10,0,0" VerticalAlignment="Top" />
+        <ListBox x:Name="AnimalList" HorizontalAlignment="Left" Height="200" Margin="127,41,0,0" VerticalAlignment="Top" Width="100" />
     </Grid>
 </Window>
