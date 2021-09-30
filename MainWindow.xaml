@@ -16,7 +16,9 @@
             Height="200" 
             Margin="10,41,0,0" SelectionChanged="ZooList_SelectionChanged"
             />
-        <Label Content="Animal List" HorizontalAlignment="Left" Margin="127,10,0,0" VerticalAlignment="Top" />
-        <ListBox x:Name="AnimalList" HorizontalAlignment="Left" Height="200" Margin="127,41,0,0" VerticalAlignment="Top" Width="100" />
+        <Label Content="Animal List" HorizontalAlignment="Left" Margin="136,10,0,0" VerticalAlignment="Top" />
+        <ListBox Name="AnimalList" HorizontalAlignment="Left" Height="200" Margin="136,41,0,0" VerticalAlignment="Top" Width="100" />
+        <Label Content="Add animal&#xD;&#xA;" HorizontalAlignment="Left" Margin="258,10,0,0" VerticalAlignment="Top" Height="26"/>
+        <ListBox Name="AllAnimalList" HorizontalAlignment="Left" Height="200" Margin="258,41,0,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Window>

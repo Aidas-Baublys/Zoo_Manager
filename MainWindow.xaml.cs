@@ -32,6 +32,7 @@ namespace Zoo_Manager
             sqlConnection = new SqlConnection(connectionString);
 
             ShowZoos();
+            ShowAllAnimals();
         }
 
         private void ShowZoos()
@@ -85,6 +86,29 @@ namespace Zoo_Manager
         private void ZooList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ShowAnimalList();
+        }
+
+        private void ShowAllAnimals()
+        {
+            try
+            {
+                string query = "select * from Animal";
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, sqlConnection);
+
+                using (sqlDataAdapter)
+                {
+                    DataTable animalTable = new DataTable();
+                    sqlDataAdapter.Fill(animalTable);
+
+                    AllAnimalList.DisplayMemberPath = "Name";
+                    AllAnimalList.SelectedValuePath = "Id";
+                    AllAnimalList.ItemsSource = animalTable.DefaultView;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
         }
     }
 }
