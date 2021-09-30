@@ -110,5 +110,26 @@ namespace Zoo_Manager
                 MessageBox.Show(e.ToString());
             }
         }
+
+        private void Delete_Zoo(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string query = "delete from Zoo where Id = @ZooID";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@ZooID", ZooList.SelectedValue);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+                ShowZoos();
+            }
+        }
     }
 }
