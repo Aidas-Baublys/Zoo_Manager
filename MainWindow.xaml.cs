@@ -86,6 +86,12 @@ namespace Zoo_Manager
         private void ZooList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ShowAnimalList();
+            ShowSelectedZoo();
+        }
+
+        private void AllAnimalList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ShowSelectedAnimal();
         }
 
         private void ShowAllAnimals()
@@ -225,6 +231,96 @@ namespace Zoo_Manager
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 sqlConnection.Open();
                 sqlCommand.Parameters.AddWithValue("@AnimalID", AllAnimalList.SelectedValue);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+                ShowAllAnimals();
+            }
+        }
+
+        private void ShowSelectedZoo()
+        {
+            try
+            {
+                string query = "select Location from Zoo where Id = @ZooID";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+
+                using (sqlDataAdapter)
+                {
+                    sqlCommand.Parameters.AddWithValue("@ZooID", ZooList.SelectedValue);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+
+                    AddText.Text = dataTable.Rows[0]["Location"].ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        private void ShowSelectedAnimal()
+        {
+            try
+            {
+                string query = "select Name from Animal where Id = @AnimalID";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+
+                using (sqlDataAdapter)
+                {
+                    sqlCommand.Parameters.AddWithValue("@AnimalID", AllAnimalList.SelectedValue);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+
+                    AddText.Text = dataTable.Rows[0]["Name"].ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        private void Update_Zoo(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string query = "update Zoo Set Location = @Location where Id = @ZooID";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@ZooID", ZooList.SelectedValue);
+                sqlCommand.Parameters.AddWithValue("@Location", AddText.Text);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+                ShowZoos();
+            }
+        }
+
+        private void Update_Animal(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string query = "update Animal Set Name = @Name where Id = @AnimalID";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@AnimalID", AllAnimalList.SelectedValue);
+                sqlCommand.Parameters.AddWithValue("@Name", AddText.Text);
                 sqlCommand.ExecuteScalar();
             }
             catch (Exception error)
