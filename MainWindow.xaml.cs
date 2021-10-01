@@ -174,5 +174,68 @@ namespace Zoo_Manager
                 ShowAnimalList();
             }
         }
+
+        private void Remove_Animal(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string query = "delete from ZooAnimal where AnimalID = @AnimalID";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@AnimalID", AnimalList.SelectedValue);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+                ShowAnimalList();
+            }
+        }
+
+        private void Add_Animal(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string query = "insert into Animal values (@Name)";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@Name", AddText.Text);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+                ShowAllAnimals();
+            }
+        }
+
+        private void Delete_Animal(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string query = "delete from Animal where Id = @AnimalID";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@AnimalID", AllAnimalList.SelectedValue);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+                ShowAllAnimals();
+            }
+        }
     }
 }
