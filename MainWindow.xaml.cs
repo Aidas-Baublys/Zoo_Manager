@@ -131,5 +131,48 @@ namespace Zoo_Manager
                 ShowZoos();
             }
         }
+
+        private void Add_Zoo(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string query = "insert into Zoo values (@Location)";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@Location", AddText.Text);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+                ShowZoos();
+            }
+        }
+
+        private void Add_Animal_To_Zoo(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string query = "insert into ZooAnimal values (@ZooID, @AnimalID)";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@ZooID", ZooList.SelectedValue);
+                sqlCommand.Parameters.AddWithValue("@AnimalID", AllAnimalList.SelectedValue);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+                ShowAnimalList();
+            }
+        }
     }
 }
